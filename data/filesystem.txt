@@ -1,0 +1,17 @@
+## The Linux filesystem — a guided tour
+Everything in Linux is a file, arranged in one tree that starts at / (the "root").
+$ /          the top of the tree (not the same as the root user's home!)
+$ /home      personal files of normal users (/home/alice)
+$ /root      home directory of the root user
+$ /etc       system-wide configuration files (text files you can edit)
+$ /var       data that changes: logs (/var/log), mail, databases, caches
+$ /tmp       temporary files, cleared on reboot
+$ /usr       installed programs and libraries (/usr/bin, /usr/lib)
+$ /bin /sbin essential commands (often symlinks into /usr today)
+$ /opt       optional / third-party software
+$ /dev       devices as files (/dev/sda is a disk)
+$ /proc      live kernel & process information (cat /proc/cpuinfo)
+$ /sys       kernel/hardware settings
+$ /mnt /media where disks and USB drives get mounted
+$ /boot      kernel and bootloader files — be careful here
+# Tip: "Permission denied" in /etc or /var usually just means you need sudo.

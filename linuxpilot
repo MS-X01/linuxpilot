@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# LinuxPilot — Linux management & learning toolkit
+# https://github.com/MS-X01/linuxpilot  (MIT)
+if (( BASH_VERSINFO[0] < 4 )); then echo "LinuxPilot needs bash >= 4.0" >&2; exit 1; fi
+
+LP_HOME="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+export LP_HOME
+
+# ---- pre-scan flags that must apply before the UI loads ----
+ACTION=""; ACTION_ARG=""
+while (( $# )); do
+    case "$1" in
+        --no-color) export NO_COLOR=1 ;;
+        --dry-run)  CLI_DRY=true ;;
+        --learn)    CLI_LEARN=true ;;
+        --version|-V) ACTION=version ;;
+        --help|-h)  ACTION=help ;;
+        --doctor)   ACTION=doctor ;;
+        --audit)    ACTION=audit ;;
+        --report)   ACTION=report; ACTION_ARG="${2:-text}"; [[ "${2:-}" == text || "${2:-}" == html ]] && shift ;;
+        --how)      ACTION=how; shift; ACTION_ARG="$*"; break ;;
+        *) echo "Unknown option: $1 (try --help)" >&2; exit 2 ;;
+    esac
+    shift
+done
+
+for f in "$LP_HOME"/lib/*.sh; do source "$f"; done
+for f in "$LP_HOME"/modules/*.sh; do source "$f"; done
+
+usage() {
+cat <<USAGE
+$LP_NAME v$LP_VERSION — Linux management & learning toolkit
+
+Usage: linuxpilot [options]
+
+  (no options)         Start the interactive menu
+  --how <words>        Search the built-in "How do I…?" recipes, e.g. --how open port
+  --doctor             Run a health check and exit (exit code 1 if problems found)
+  --audit              Run the security audit and exit (exit code 1 on serious findings)
+  --report [text|html] Write a system report to the current directory
+  --learn              Start with Learn Mode (explains every command it runs)
+  --dry-run            Show commands but never execute them
+  --no-color           Disable colors
+  -V, --version        Print version
+  -h, --help           This help
+
+Config: $CONFIG_FILE
+Log:    $LOG_FILE
+USAGE
+}
+
+init_state
+[[ "${CLI_DRY:-}"   == true ]] && DRY_RUN=true
+[[ "${CLI_LEARN:-}" == true ]] && LEARN_MODE=true
+
+case "$ACTION" in
+    version) echo "$LP_NAME v$LP_VERSION by $LP_AUTHOR"; exit 0 ;;
+    help)    usage; exit 0 ;;
+    doctor)  health_run; exit $? ;;
+    audit)   root_notice; audit_security_run; sc="$(sec_score)"; echo; hr; printf '  Security score  '; bar "$sc"; echo; hr
+             for e in "${SEC_LOG[@]}"; do [[ "${e%%|*}" == bad ]] && exit 1; done; exit 0 ;;
+    report)  report_write "${ACTION_ARG:-text}"; exit $? ;;
+    how)     docs_search "$LP_HOME/data/recipes.txt" "$ACTION_ARG"; exit 0 ;;
+esac
+
+if [[ ! -t 0 && -z "${LP_ALLOW_PIPE:-}" ]]; then echo "LinuxPilot's menu needs an interactive terminal. See --help for CLI options." >&2; exit 1; fi
+
+trap 'printf "\n"; warn "Interrupted — press 0 to go back or q to quit."' INT
+audit INFO "Session started (v$LP_VERSION)"
+menu "__main__" "$C" "${MAIN_ITEMS[@]}"
+exit_app

@@ -1,0 +1,13 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ShellCheck
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
+          shellcheck -x -S warning -e SC1090,SC1091,SC2034,SC2154,SC2155,SC2016,SC2088,SC2207 linuxpilot lib/*.sh modules/*.sh install.sh uninstall.sh
+      - name: Smoke test
+        run: bash tests/smoke.sh

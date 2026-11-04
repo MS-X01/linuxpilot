@@ -1,0 +1,61 @@
+## Navigation
+$ pwd                 # where am I?
+$ ls -lah             # list files (long, all, human sizes)
+$ cd /path | cd .. | cd ~ | cd -     # go there | up | home | back
+$ tree -L 2           # folder tree (may need installing)
+
+## Files & folders
+$ cp -r src dst       # copy
+$ mv old new          # move / rename
+$ rm file | rm -r dir # delete (NO recycle bin!)
+$ mkdir -p a/b/c      # create nested folders
+$ touch file          # create empty file / update time
+$ ln -s target link   # symbolic link
+$ cat | less | head | tail -f file   # view files
+
+## Searching
+$ find . -name "*.log" -mtime -1     # files changed in last day
+$ grep -rn "text" .                  # search inside files
+$ locate name                        # fast search by name
+$ which cmd | type -a cmd            # where is this command?
+
+## Pipes & redirection
+$ cmd > file          # overwrite file with output
+$ cmd >> file         # append
+$ cmd1 | cmd2         # send output of cmd1 into cmd2
+$ cmd 2>&1            # merge errors into normal output
+$ cmd1 && cmd2        # run cmd2 only if cmd1 succeeded
+
+## Processes
+$ ps aux | top | htop # list / monitor
+$ kill PID | kill -9 PID | pkill name
+$ cmd &               # run in background
+$ jobs | fg | bg      # manage background jobs
+$ Ctrl+C | Ctrl+Z     # stop | suspend the running command
+
+## Users & permissions
+$ whoami | id | groups
+$ sudo cmd            # run as administrator
+$ chmod 755 f | chown user:group f
+$ passwd              # change your password
+$ su - user           # switch user
+
+## Networking
+$ ip -br a | ip route     # addresses | routes
+$ ss -tulpn               # open ports
+$ ping -c 4 host | curl -I url | dig domain
+$ ssh user@host | scp f user@host:/path
+
+## Disk & system
+$ df -h | du -sh dir | lsblk
+$ free -h | uptime | uname -a
+$ systemctl status|start|stop|restart|enable name
+$ journalctl -u name -f
+$ dmesg | tail
+
+## Keyboard shortcuts (bash)
+$ Tab                 # autocomplete — use it constantly
+$ Ctrl+R              # search command history
+$ Ctrl+A / Ctrl+E     # jump to start / end of line
+$ Ctrl+L              # clear screen
+$ !!                  # repeat last command (sudo !! = with sudo)

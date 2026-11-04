@@ -1,0 +1,5 @@
+*.log
+linuxpilot-report-*
+*.tar.gz
+
+docs/_tmp/

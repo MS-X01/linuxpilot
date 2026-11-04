@@ -1,0 +1,35 @@
+## Terminal / Shell / Bash
+The terminal is the window; the shell is the program inside it that reads your commands; bash is the most common shell.
+
+## Root & sudo
+root is the all-powerful administrator account. sudo runs a single command with root power so you do not have to log in as root.
+
+## Package manager
+A tool (apt, dnf, pacman…) that installs, updates and removes software from trusted repositories and handles dependencies.
+
+## Daemon / Service
+A program that runs in the background (web server, SSH server). Managed with systemctl on most distros.
+
+## PID
+Process ID — the number Linux gives each running program. You need it to kill or inspect a process.
+
+## Permissions (rwx)
+Every file has read/write/execute rights for three groups: owner, group, others. 755 = owner rwx, others r-x.
+
+## Pipe ( | )
+Connects the output of one command to the input of the next: ps aux | grep ssh.
+
+## Cron
+The scheduler that runs commands automatically at set times.
+
+## SSH
+Secure Shell — an encrypted way to log in to and control another computer over the network.
+
+## Firewall
+Software that decides which network connections are allowed in or out (ufw, firewalld, nftables).
+
+## Mount
+Attaching a disk or partition to a folder so you can read its files.
+
+## Distro
+A "flavour" of Linux — Ubuntu, Debian, Fedora, Arch… same kernel, different tools and defaults.

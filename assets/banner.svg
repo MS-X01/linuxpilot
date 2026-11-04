@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" width="900" height="220" role="img" aria-label="LinuxPilot">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0f14"/><stop offset="1" stop-color="#0f1f24"/></linearGradient>
+<linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#60a5fa"/></linearGradient>
+<linearGradient id="tx" x1="0" x2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#60a5fa"/></linearGradient>
+</defs>
+<rect width="900" height="220" rx="20" fill="url(#bg)"/>
+<circle cx="800" cy="20" r="150" fill="#34d399" opacity=".07"/>
+<g transform="translate(70,54) scale(1.75)"><rect width="64" height="64" rx="15" fill="url(#lg)"/>
+<path d="M19 22l13 10-13 10" fill="none" stroke="#06121a" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 44h12" stroke="#06121a" stroke-width="5.5" stroke-linecap="round"/></g>
+<text x="215" y="112" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="76" font-weight="800" fill="url(#tx)">LinuxPilot</text>
+<text x="218" y="156" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="23" fill="#b6c4d1">Learn Linux. Manage Linux. One friendly menu.</text>
+</svg>

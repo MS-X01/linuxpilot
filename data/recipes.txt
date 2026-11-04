@@ -1,0 +1,181 @@
+## How do I find which program is using a port?
+@ port listening process using busy 8080 ss lsof address in use
+$ sudo ss -tulpn | grep :8080
+$ sudo lsof -i :8080
+# ss lists sockets; -t TCP, -u UDP, -l listening, -p process, -n no name lookup.
+
+## How do I check how much disk space is left?
+@ disk space full free df storage
+$ df -h
+$ du -sh * | sort -h | tail
+# df shows each filesystem; du shows what inside a folder is big.
+
+## How do I find the biggest files and folders?
+@ largest biggest files folders disk cleanup du
+$ du -ah /var 2>/dev/null | sort -rh | head -20
+$ sudo find / -xdev -type f -size +500M 2>/dev/null
+# Handy when a disk is full and you do not know why.
+
+## How do I find a file by name?
+@ find locate search file name
+$ find . -iname "*report*"
+$ locate report
+# find walks the disk live; locate uses a database (sudo updatedb to refresh).
+
+## How do I search for text inside files?
+@ grep search text content inside recursive
+$ grep -rniI "some text" .
+# -r recursive, -n line numbers, -i ignore case, -I skip binary files.
+
+## How do I see which processes use the most CPU or memory?
+@ cpu memory ram slow process top htop heavy
+$ ps aux --sort=-%cpu | head
+$ ps aux --sort=-%mem | head
+$ top    # press q to quit
+# htop is a friendlier top (sudo apt install htop).
+
+## How do I stop (kill) a stuck program?
+@ kill stuck frozen hung process terminate
+$ pgrep -a firefox          # find the PID
+$ kill 1234                 # polite request (SIGTERM)
+$ kill -9 1234              # force, last resort (SIGKILL)
+
+## How do I install a program?
+@ install package software apt dnf pacman yum
+$ sudo apt install htop      # Debian / Ubuntu / Mint
+$ sudo dnf install htop      # Fedora / RHEL
+$ sudo pacman -S htop        # Arch
+# Update the package list first: sudo apt update
+
+## How do I update my whole system?
+@ update upgrade system packages
+$ sudo apt update && sudo apt upgrade     # Debian family
+$ sudo dnf upgrade                        # Fedora / RHEL
+$ sudo pacman -Syu                        # Arch
+
+## How do I add a new user?
+@ user add create account adduser useradd
+$ sudo useradd -m -s /bin/bash alice
+$ sudo passwd alice
+# -m creates the home directory, -s sets the login shell.
+
+## How do I give a user sudo (admin) rights?
+@ sudo admin privileges wheel group
+$ sudo usermod -aG sudo alice     # Debian / Ubuntu
+$ sudo usermod -aG wheel alice    # Fedora / RHEL / Arch
+# -a (append) is essential — without it the user is removed from other groups!
+
+## How do I change file permissions?
+@ chmod permissions executable rwx access denied
+$ chmod +x script.sh          # make executable
+$ chmod 644 file.txt          # owner rw, others read
+$ chmod 755 folder            # owner rwx, others rx
+# Use the Permission Calculator in the Permissions menu if the numbers confuse you.
+
+## How do I change a file's owner?
+@ chown owner group change ownership
+$ sudo chown alice:alice file.txt
+$ sudo chown -R alice: /srv/site     # -R = whole folder tree
+
+## How do I start, stop or restart a service?
+@ service systemctl start stop restart enable boot daemon nginx ssh
+$ sudo systemctl restart nginx
+$ systemctl status nginx
+$ sudo systemctl enable --now nginx    # start now AND at every boot
+
+## How do I read a service's logs?
+@ logs journalctl service error debug
+$ journalctl -u nginx -n 50 --no-pager
+$ journalctl -u nginx -f        # follow live (Ctrl+C to stop)
+$ journalctl -p err -b          # errors since last boot
+
+## How do I open a port in the firewall?
+@ firewall ufw open port allow firewalld
+$ sudo ufw allow 80/tcp          # Ubuntu / Debian
+$ sudo firewall-cmd --permanent --add-port=80/tcp && sudo firewall-cmd --reload   # Fedora / RHEL
+# Always allow SSH (22) BEFORE enabling a firewall on a remote server.
+
+## How do I find my IP address?
+@ ip address network interface public local
+$ ip -br a                  # local addresses
+$ curl -s ifconfig.me       # public address
+
+## How do I test if a server or website is reachable?
+@ ping reachable network test connection curl dns
+$ ping -c 4 example.com
+$ curl -I https://example.com
+$ nc -zv example.com 443     # is this port open?
+
+## How do I connect to another machine with SSH?
+@ ssh remote connect login server key
+$ ssh user@192.168.1.10
+$ ssh -i ~/.ssh/id_ed25519 -p 2222 user@host
+# Better than passwords: create a key (SSH menu) and run ssh-copy-id.
+
+## How do I copy files to or from a server?
+@ scp rsync copy transfer upload download remote
+$ scp file.txt user@host:/tmp/
+$ rsync -avz --progress folder/ user@host:/backup/
+# rsync only sends changes, so repeats are fast.
+
+## How do I compress or extract files?
+@ tar zip gzip extract unzip archive compress tar.gz
+$ tar -czf backup.tar.gz folder/     # create
+$ tar -xzf backup.tar.gz             # extract
+$ unzip file.zip
+
+## How do I schedule a task to run automatically?
+@ cron schedule automatic job timer crontab every
+$ crontab -e
+# Example line (every day at 02:30):   30 2 * * * /home/me/backup.sh
+# Format: minute hour day-of-month month day-of-week command
+
+## How do I see who is logged in and who logged in before?
+@ who logged login history last users
+$ who
+$ last -n 20
+
+## How do I see failed login attempts?
+@ failed login brute force ssh auth security attack
+$ sudo journalctl -u ssh -g "Failed password" -n 30     # service may be called sshd
+$ sudo grep "Failed password" /var/log/auth.log | tail
+$ sudo lastb | head
+
+## How do I check why the system is slow?
+@ slow performance lag load high cpu io
+$ uptime
+$ vmstat 1 5
+$ free -h
+# Load higher than your CPU core count (nproc) means the machine is overloaded.
+
+## How do I free memory or see memory use?
+@ memory ram swap free out of memory oom
+$ free -h
+$ ps aux --sort=-%mem | head -5
+# Linux uses spare RAM for cache — look at the "available" column, not "free".
+
+## How do I change the hostname?
+@ hostname rename computer name
+$ sudo hostnamectl set-hostname myserver
+
+## How do I check the Linux version and kernel?
+@ version kernel distro os release uname
+$ cat /etc/os-release
+$ uname -r
+
+## How do I mount a USB drive or disk?
+@ mount usb disk drive partition lsblk
+$ lsblk -f                              # find the device (e.g. sdb1)
+$ sudo mkdir -p /mnt/usb && sudo mount /dev/sdb1 /mnt/usb
+$ sudo umount /mnt/usb                   # eject safely
+
+## How do I edit a file in the terminal?
+@ edit editor nano vim vi text file
+$ nano file.txt      # beginner friendly: Ctrl+O save, Ctrl+X exit
+$ vim file.txt       # powerful: i = type, Esc then :wq = save+quit, :q! = quit without saving
+
+## How do I make a backup of a folder?
+@ backup copy archive save tar rsync
+$ tar -czf ~/backup-$(date +%F).tar.gz ~/Documents
+$ rsync -a --delete ~/Documents/ /mnt/usb/Documents/
+# The Backup menu does the first one for you.
